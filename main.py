@@ -36,9 +36,9 @@ class Shop_file:
         elif qus == "3":
             s.Delete_product()
         elif qus == "4":
-            s.change_product_name()
+            s.change_product_name_price(0)
         elif qus == "5":
-            s.change_product_price()
+            s.change_product_name_price(1)
         elif qus == "6":
             with open("Text2.csv", "r") as r1:
                 reader = r1.read()
@@ -102,7 +102,11 @@ class Shop_file:
                 writer.writerows(lines)
             s.Admin()
 
-    def change_product_name(self):
+    def change_product_name_price(self, i):
+        if i == 0:
+            name_price = "name"
+        else:
+            name_price = "price"
         lines = list()
         name_of_the_product = input("Enter the name of the product: ")
         num_to_check = 0
@@ -111,8 +115,8 @@ class Shop_file:
             for row in reader:
                 if name_of_the_product == row[0]:
                     num_to_check += 1
-                    new_name = input("Enter the new name: ")
-                    row[0] = new_name
+                    new_name = input(f"Enter the new {name_price}: ")
+                    row[i] = new_name
                 lines += f"{','.join(row)}\n"
             string = ''.join(lines)
 
@@ -122,30 +126,7 @@ class Shop_file:
 
             with open("Test.csv", "w")as w:
                 w.write(string)
-                input("The product name change successfully!\nPress enter to go back: ")
-            s.Admin()
-
-    def change_product_price(self):
-        lines = list()
-        name_of_the_product = input("Enter the name of the product: ")
-        num_to_check = 0
-        with open("Test.csv", "r+") as readfile:
-            reader = csv.reader(readfile)
-            for row in reader:
-                if name_of_the_product == row[0]:
-                    num_to_check += 1
-                    new_price = input("Enter the new Price: ")
-                    row[1] = new_price
-                lines += f"{','.join(row)}\n"
-            string = ''.join(lines)
-
-            if num_to_check == 0:
-                print(f"The product ({name_of_the_product}) Do not found try again!")
-                s.Admin()
-
-            with open("Test.csv", "w") as w:
-                w.write(string)
-                input("The product price change successfully!\nPress enter to go back: ")
+                input(f"The product {name_price} change successfully!\nPress enter to go back: ")
             s.Admin()
 
     def print_admin_option(self):
